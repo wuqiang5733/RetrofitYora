@@ -12,6 +12,7 @@ import java.util.Map;
 
 import retrofit.RestAdapter;
 import retrofit.http.GET;
+import retrofit.http.Query;
 
 public class MainActivity extends AppCompatActivity {
     private class GistFile{
@@ -33,9 +34,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class UserSummery{
+        public String login;
+        public String id;
+
+        @Override
+        public String toString(){
+            return "UserSummery{" + "login = " + login + "id = " + id;
+        }
+    }
+
+    private class UsersSearchResult{
+        public int total_count;
+        public boolean incomplete_resule;
+        public List<UserSummery> items;
+    }
+
     private interface GithubService{
         @GET("/gists/public")
         List<Gist> getPublicGists();
+
+        @GET("/search/users")
+        UsersSearchResult searchUsers(@Query("q") String query);
 
     }
 
@@ -56,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.activity_main_listView);
         listView.setAdapter(listAdapter);
 
-        listAdapter.addAll(service.getPublicGists());
+        listAdapter.addAll(service.searchUsers("wuqiang5733").items);
+//        listAdapter.addAll(service.searchUsers("wuqiang5733"));
+//        listAdapter.addAll(service.getPublicGists());
     }
 }
