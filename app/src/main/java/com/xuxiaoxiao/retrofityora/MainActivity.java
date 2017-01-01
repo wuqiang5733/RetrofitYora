@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
         @GET("/search/users")
         UsersSearchResult searchUsers(@Query("q") String query);
 
-        @GET("users/{username}")
+        @GET("/users/{username}")
         UserDetails getUser(@Path("username") String username);
 
         // 下面是演示在另一个线程执行的情况
-        @GET("users/{username}")
+        @GET("/users/{username}")
         void getUserAsync(@Path("username") String username , Callback<UserDetails> callback);
 
 
@@ -108,10 +108,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 UserSummery summery = (UserSummery)listAdapter.getItem(position);
+//                Toast.makeText(MainActivity.this,summery.login,Toast.LENGTH_SHORT).show();
                 service.getUserAsync(summery.login, new Callback<UserDetails>() {
                     @Override
                     public void success(UserDetails userDetails, Response response) {
-                        Toast.makeText(MainActivity.this,userDetails.location,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,userDetails.id,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this,userDetails.location,Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
